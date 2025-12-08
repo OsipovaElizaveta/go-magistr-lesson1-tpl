@@ -40,7 +40,7 @@ func main() {
 
 		var values []float64
 
-		for value := range strings.SplitSeq(bodyStr, ",") {
+		for _, value := range strings.Split(bodyStr, ",") {
 
 			number, _ := strconv.ParseFloat(strings.TrimSpace(value), 64)
 
