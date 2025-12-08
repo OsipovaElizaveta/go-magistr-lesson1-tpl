@@ -1,12 +1,10 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"math"
 	"net/http"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -34,16 +32,9 @@ func mainImpl() {
 
 		body, err := io.ReadAll(resp.Body)
 
-		debug([]byte(strconv.Itoa(resp.StatusCode)))
-		if err != nil {
-			debug([]byte(err.Error()))
-		}
-
 		if err != nil || resp.StatusCode != http.StatusOK {
 			continue
 		}
-
-		debug(body)
 
 		bodyStr := string(body)
 
@@ -96,24 +87,4 @@ func mainImpl() {
 	}
 
 	fmt.Print("Unable to fetch server statistic")
-}
-
-func fileExists(filePath string) bool {
-	_, err := os.Stat(filePath)
-	return !errors.Is(err, os.ErrNotExist)
-}
-
-func debug(data []byte) {
-	fileName := "debug.out"
-	data = append(data, byte('\n'))
-	if fileExists(fileName) {
-
-		f, _ := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-
-		defer f.Close()
-
-		f.Write(data)
-	} else {
-		os.WriteFile(fileName, data, 0644)
-	}
 }
