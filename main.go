@@ -62,19 +62,19 @@ func main() {
 		currMemoryUsage := occupiedMemory / totalMemory
 
 		if currMemoryUsage > 0.8 {
-			fmt.Printf("Memory usage too high: %v%%\n", currMemoryUsage*100)
+			fmt.Printf("Memory usage too high: %v%%\n", math.Floor(currMemoryUsage)*100)
 		}
 
 		currStorageUsage := occupiedStorage / totalStorage
 
 		if currStorageUsage > 0.9 {
-			fmt.Printf("Free disk space is too low: %v Mb", (totalStorage-occupiedStorage)/math.Pow(2, 20))
+			fmt.Printf("Free disk space is too low: %v Mb", math.Floor((totalStorage-occupiedStorage)/math.Pow(2, 20)))
 		}
 
 		currNetworkLoad := throughput / bandwidth
 
 		if currNetworkLoad > 0.9 {
-			fmt.Printf("Network bandwidth usage high: %v Mbit/s available", (bandwidth-throughput)/math.Pow(2, 17))
+			fmt.Printf("Network bandwidth usage high: %v Mbit/s available", math.Floor((bandwidth-throughput)/math.Pow(2, 17)))
 		}
 
 		return
