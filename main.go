@@ -85,7 +85,7 @@ func mainImpl() {
 		currStorageUsage := occupiedStorage / totalStorage
 
 		if currStorageUsage > 0.9 {
-			fmt.Printf("Free disk space is too low: %v Mb\n left", math.Floor((totalStorage-occupiedStorage)/math.Pow(2, 20)))
+			fmt.Printf("Free disk space is too low: %v Mb left\n", math.Floor((totalStorage-occupiedStorage)/math.Pow(2, 20)))
 		}
 
 		currNetworkLoad := throughput / bandwidth
