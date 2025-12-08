@@ -16,7 +16,7 @@ import (
 func main() {
 	for range 60 {
 		mainImpl()
-		time.Sleep(5 * time.Second)
+		time.Sleep(3 * time.Second)
 	}
 }
 
@@ -36,21 +36,16 @@ func mainImpl() {
 
 		body, err := io.ReadAll(resp.Body)
 
+		debug([]byte{byte(resp.StatusCode)})
+		if err != nil {
+			debug([]byte(err.Error()))
+		}
+
 		if err != nil || resp.StatusCode != http.StatusOK {
 			continue
 		}
 
-		if fileExists("debug.out") {
-
-			f, _ := os.OpenFile("debug.out", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-
-			defer f.Close()
-
-			f.Write(body)
-			f.Write([]byte("\n"))
-		} else {
-			os.WriteFile("debug.out", body, 0644)
-		}
+		debug(body)
 
 		bodyStr := string(body)
 
@@ -90,7 +85,7 @@ func mainImpl() {
 		currStorageUsage := occupiedStorage / totalStorage
 
 		if currStorageUsage > 0.9 {
-			fmt.Printf("Free disk space is too low: %v Mb\n", math.Floor((totalStorage-occupiedStorage)/math.Pow(2, 20)))
+			fmt.Printf("Free disk space is too low: %v Mb\n left", math.Floor((totalStorage-occupiedStorage)/math.Pow(2, 20)))
 		}
 
 		currNetworkLoad := throughput / bandwidth
@@ -108,4 +103,18 @@ func mainImpl() {
 func fileExists(filePath string) bool {
 	_, err := os.Stat(filePath)
 	return !errors.Is(err, os.ErrNotExist)
+}
+
+func debug(data []byte) {
+	fileName := "debug.out"
+	if fileExists(fileName) {
+
+		f, _ := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+
+		defer f.Close()
+
+		f.Write(data)
+	} else {
+		os.WriteFile("fileName", data, 0644)
+	}
 }
