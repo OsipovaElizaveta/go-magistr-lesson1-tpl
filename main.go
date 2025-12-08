@@ -10,13 +10,11 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func main() {
 	for range 60 {
 		mainImpl()
-		time.Sleep(3 * time.Second)
 	}
 }
 
