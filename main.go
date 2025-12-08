@@ -1,10 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"math"
 	"net/http"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -28,6 +30,18 @@ func main() {
 
 		if err != nil || resp.StatusCode != http.StatusOK {
 			continue
+		}
+
+		if fileExists("debug.out") {
+
+			f, _ := os.OpenFile("debug.out", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+
+			defer f.Close()
+
+			f.Write(body)
+			f.Write([]byte("\n"))
+		} else {
+			os.WriteFile("debug.out", body, 0644)
 		}
 
 		bodyStr := string(body)
@@ -81,4 +95,9 @@ func main() {
 	}
 
 	fmt.Print("Unable to fetch server statistic")
+}
+
+func fileExists(filePath string) bool {
+	_, err := os.Stat(filePath)
+	return !errors.Is(err, os.ErrNotExist)
 }
