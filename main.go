@@ -38,6 +38,8 @@ func main() {
 			continue
 		}
 
+		fmt.Println(bodyStr)
+
 		var values []float64
 
 		for _, value := range strings.Split(bodyStr, ",") {
