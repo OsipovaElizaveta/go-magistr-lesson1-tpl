@@ -115,6 +115,6 @@ func debug(data []byte) {
 
 		f.Write(data)
 	} else {
-		os.WriteFile("fileName", data, 0644)
+		os.WriteFile(fileName, data, 0644)
 	}
 }
