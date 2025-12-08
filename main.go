@@ -91,7 +91,7 @@ func mainImpl() {
 		currNetworkLoad := throughput / bandwidth
 
 		if currNetworkLoad > 0.9 {
-			fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", math.Floor((bandwidth-throughput)/math.Pow(2, 17)))
+			fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", math.Floor((bandwidth-throughput)/1_000_000))
 		}
 
 		return
