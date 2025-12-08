@@ -10,9 +10,17 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func main() {
+	for range 60 {
+		mainImpl()
+		time.Sleep(5 * time.Second)
+	}
+}
+
+func mainImpl() {
 	url := "http://srv.msk01.gigacorp.local/_stats"
 	regex, _ := regexp.Compile(`^\d{1,19}(?:,\d{1,19}){6}$`)
 
