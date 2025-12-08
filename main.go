@@ -36,7 +36,7 @@ func mainImpl() {
 
 		body, err := io.ReadAll(resp.Body)
 
-		debug([]byte{byte(resp.StatusCode)})
+		debug([]byte(strconv.Itoa(resp.StatusCode)))
 		if err != nil {
 			debug([]byte(err.Error()))
 		}
@@ -107,6 +107,7 @@ func fileExists(filePath string) bool {
 
 func debug(data []byte) {
 	fileName := "debug.out"
+	data = append(data, byte('\n'))
 	if fileExists(fileName) {
 
 		f, _ := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
