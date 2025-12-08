@@ -64,7 +64,7 @@ func main() {
 		currMemoryUsage := occupiedMemory / totalMemory
 
 		if currMemoryUsage > 0.8 {
-			fmt.Printf("Memory usage too high: %v%%\n", math.Floor(currMemoryUsage)*100)
+			fmt.Printf("Memory usage too high: %v%%\n", math.Floor(currMemoryUsage*100))
 		}
 
 		currStorageUsage := occupiedStorage / totalStorage
