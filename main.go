@@ -38,48 +38,38 @@ func mainImpl() {
 
 		bodyStr := string(body)
 
-		matched := regex.MatchString(bodyStr)
-
-		if !matched {
+		if !regex.MatchString(bodyStr) {
 			continue
 		}
 
-		var values []float64
+		values := strings.Split(bodyStr, ",")
 
-		for _, value := range strings.Split(bodyStr, ",") {
-
-			number, _ := strconv.ParseFloat(strings.TrimSpace(value), 64)
-
-			values = append(values, number)
+		getValue := func(index int) float64 {
+			number, _ := strconv.ParseFloat(strings.TrimSpace(values[index]), 64)
+			return number
 		}
 
-		loadAverage := values[0]
-		totalMemory := values[1]
-		occupiedMemory := values[2]
-		totalStorage := values[3]
-		occupiedStorage := values[4]
-		bandwidth := values[5]
-		throughput := values[6]
+		loadAverage := getValue(0)
+		totalStorage := getValue(3)
+		occupiedStorage := getValue(4)
+		bandwidth := getValue(5)
+		throughput := getValue(6)
 
 		if loadAverage > 30 {
-			fmt.Printf("Load Average is too high: %v\n", values[0])
+			fmt.Printf("Load Average is too high: %v\n", loadAverage)
 		}
 
-		currMemoryUsage := occupiedMemory / totalMemory
+		currMemoryUsage := getValue(2) / getValue(1)
 
 		if currMemoryUsage > 0.8 {
 			fmt.Printf("Memory usage too high: %v%%\n", math.Floor(currMemoryUsage*100))
 		}
 
-		currStorageUsage := occupiedStorage / totalStorage
-
-		if currStorageUsage > 0.9 {
+		if occupiedStorage/totalStorage > 0.9 {
 			fmt.Printf("Free disk space is too low: %v Mb left\n", math.Floor((totalStorage-occupiedStorage)/math.Pow(2, 20)))
 		}
 
-		currNetworkLoad := throughput / bandwidth
-
-		if currNetworkLoad > 0.9 {
+		if throughput/bandwidth > 0.9 {
 			fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", math.Floor((bandwidth-throughput)/1_000_000))
 		}
 
