@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"math"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -44,8 +43,8 @@ func mainImpl() {
 
 		values := strings.Split(bodyStr, ",")
 
-		getValue := func(index int) float64 {
-			number, _ := strconv.ParseFloat(strings.TrimSpace(values[index]), 64)
+		getValue := func(index int) int64 {
+			number, _ := strconv.ParseInt(strings.TrimSpace(values[index]), 10, 64)
 			return number
 		}
 
@@ -59,18 +58,18 @@ func mainImpl() {
 			fmt.Printf("Load Average is too high: %v\n", loadAverage)
 		}
 
-		currMemoryUsage := getValue(2) / getValue(1)
+		currMemoryUsage := getValue(2) * 100 / getValue(1)
 
-		if currMemoryUsage > 0.8 {
-			fmt.Printf("Memory usage too high: %v%%\n", math.Floor(currMemoryUsage*100))
+		if currMemoryUsage >= 80 {
+			fmt.Printf("Memory usage too high: %v%%\n", currMemoryUsage)
 		}
 
-		if occupiedStorage/totalStorage > 0.9 {
-			fmt.Printf("Free disk space is too low: %v Mb left\n", math.Floor((totalStorage-occupiedStorage)/math.Pow(2, 20)))
+		if occupiedStorage/totalStorage*100 >= 90 {
+			fmt.Printf("Free disk space is too low: %v Mb left\n", (totalStorage-occupiedStorage)/(1<<20))
 		}
 
-		if throughput/bandwidth > 0.9 {
-			fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", math.Floor((bandwidth-throughput)/1_000_000))
+		if throughput/bandwidth*100 >= 90 {
+			fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", (bandwidth-throughput)/1_000_000)
 		}
 
 		return
