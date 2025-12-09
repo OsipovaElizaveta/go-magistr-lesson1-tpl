@@ -64,11 +64,11 @@ func mainImpl() {
 			fmt.Printf("Memory usage too high: %v%%\n", currMemoryUsage)
 		}
 
-		if occupiedStorage/totalStorage*100 >= 90 {
+		if occupiedStorage*100/totalStorage >= 90 {
 			fmt.Printf("Free disk space is too low: %v Mb left\n", (totalStorage-occupiedStorage)/(1<<20))
 		}
 
-		if throughput/bandwidth*100 >= 90 {
+		if throughput*100/bandwidth >= 90 {
 			fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", (bandwidth-throughput)/1_000_000)
 		}
 
